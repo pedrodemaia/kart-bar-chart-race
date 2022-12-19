@@ -69,6 +69,7 @@ if __name__ == '__main__':
     driver.get(race_link)
     summary_df = get_summary_table(driver)
     detailed_df = get_detailed_table(driver)
+    driver.close()
 
     a = 1.0
 
