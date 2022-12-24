@@ -9,7 +9,6 @@ if __name__ == '__main__':
     race_link = 'http://www.mylaptime.com/laptime/clientes/214V20106819C9780G1X1P108/results/r3.html?evt=11226&epg=6018'
 
     (summary_df, detailed_df) = download_race_data(race_link)
-    process_data(summary_df, detailed_df)
-
-    a = 1.0
+    times, cumulative, positions, fast_laps, speed = process_data(summary_df, detailed_df)
+    a = 1
 
