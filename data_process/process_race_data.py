@@ -46,7 +46,17 @@ def get_cumulative_time(df: pd.DataFrame) -> pd.DataFrame:
     Create table with cumulative times for each car each lap
     '''
 
-    pass
+    cumulative = df.copy()
+
+    for pilot in df.columns:
+        sum = datetime.datetime.min
+        for lap, laptime in df[pilot].iteritems():
+            if pd.isna(laptime):
+                break
+            sum += datetime.timedelta(seconds=laptime.minute * 60 + laptime.second, microseconds=laptime.microsecond)
+            cumulative.loc[lap, pilot] = sum.time()
+
+    return cumulative
 
 def process_data(summary: pd.DataFrame, detailed: pd.DataFrame) -> None:
     '''
@@ -55,3 +65,5 @@ def process_data(summary: pd.DataFrame, detailed: pd.DataFrame) -> None:
 
     times = create_unified_table(summary, detailed)
     cumulative = get_cumulative_time(times)
+
+    a = 1
