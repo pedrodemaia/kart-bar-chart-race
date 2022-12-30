@@ -12,5 +12,4 @@ if __name__ == '__main__':
     (summary_df, detailed_df) = download_race_data(race_link)
     times, cumulative, positions, fast_laps, speed = process_data(summary_df, detailed_df)
     create_gif(positions, speed)
-    a = 1
 

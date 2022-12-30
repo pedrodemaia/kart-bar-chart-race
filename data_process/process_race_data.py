@@ -97,7 +97,7 @@ def get_cumulative_time(df: pd.DataFrame) -> pd.DataFrame:
     offsets = {}
     for pilot in df.columns:
         sum = datetime.datetime.min
-        for lap, laptime in df[pilot].iteritems():
+        for lap, laptime in df[pilot].items():
             if lap != 'total':
                 if pd.isna(laptime):
                     continue
@@ -108,7 +108,7 @@ def get_cumulative_time(df: pd.DataFrame) -> pd.DataFrame:
 
         # add offset time to all pilots
         sum = datetime.datetime.min + offsets[pilot]
-        for lap, laptime in df[pilot].iteritems():
+        for lap, laptime in df[pilot].items():
             if lap == 'total' or pd.isna(laptime):
                 continue
             sum += get_timedelta_from_time(laptime)

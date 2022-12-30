@@ -7,6 +7,7 @@
     <list default="true" id="f112badd-02fe-4733-b249-cd81b31d7160" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_print/print_race_evolution.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_print/print_race_evolution.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_process/process_race_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process/process_race_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -85,16 +86,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>14</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

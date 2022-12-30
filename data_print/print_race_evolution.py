@@ -1,60 +1,77 @@
 '''
-Print bar chart race from race data
-Source: https://pythoninoffice.com/how-to-create-the-bar-chart-race-plot-in-python/
+Print bar chart race from kart race data
 '''
+from typing import Tuple
 
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, PillowWriter
 import pandas as pd
+import numpy as np
+
+
+def expand_data(positions: pd.DataFrame, speed: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    expanded_positions = positions.copy().fillna(0)
+    expanded_speed = speed.copy().fillna(0)
+
+    factor = 10
+    num_laps = speed.shape[0]
+
+    expanded_speed.index = range(1, num_laps * factor, factor)
+    expanded_positions.index = range(1, num_laps * factor, factor)
+
+    row_nums = [i for i in range(1, (num_laps - 1) * factor + 2) if i % 10 != 1]
+    empty = pd.DataFrame(np.nan, index=row_nums, columns=speed.columns)
+
+    expanded_speed = pd.concat([expanded_speed, empty]).sort_index().interpolate()
+    expanded_positions = pd.concat([expanded_positions, empty]).sort_index().interpolate()
+
+    return expanded_positions, expanded_speed
 
 def print_lap_charts(positions: pd.DataFrame, speed: pd.DataFrame) -> None:
     '''
     Create a single lap bar chart
     '''
 
-    fig, axs = plt.subplots(nrows=1, ncols=speed.shape[0], figsize=(10, 5), tight_layout=True)
-    for i, ax in enumerate(axs):
-        ax.barh(y=speed.iloc[i].rank(),
-                tick_label=speed.iloc[i].index,
-                width=speed.iloc[i].values,
-                color=plt.cm.Set1(range(speed.shape[1])))
-        ax.set_title(f'{i}-th lap', fontsize='larger')
-        [spine.set_visible(False) for spine in ax.spines.values()]  # remove chart outlines
+    rescale = lambda y: (y - np.min(y)) / (np.max(y) - np.min(y))
 
-
-    def update(i: int) -> None:
+    def update(idx: int) -> None:
         ax.clear()
         ax.set_facecolor(plt.cm.Greys(0.2))
         [spine.set_visible(False) for spine in ax.spines.values()]
-        hbars = ax.barh(y=speed.iloc[i].rank().values,
-                        tick_label=speed.iloc[i].index,
-                        width=speed.iloc[i].values,
-                        height=0.8,
-                        color=plt.cm.Set1(range(11))
-                        )
-        ax.set_title(f'Frame: {i}')
-        # ax.bar_label(hbars, fmt='%.2d')
+        hbars = ax.barh(
+            y=positions.loc[idx + 1],
+            tick_label=positions.loc[idx + 1].index,
+            width=speed.loc[idx + 1].values,
+            height=0.8,
+            color=plt.cm.YlOrRd(rescale(speed.loc[idx + 1].values))
+        )
+        ax.invert_yaxis()
+        ax.set_title(f'{int(np.floor(idx/10))+1}a volta', fontsize='larger')
+        ax.bar_label(hbars, fmt='%.2f km/h')
+        ax.get_xaxis().set_visible(False)
 
-
-    fig, ax = plt.subplots(  # figsize=(10,7),
+    fig, ax = plt.subplots(
+        figsize=(10,7),
         facecolor=plt.cm.Greys(0.2),
         dpi=150,
         tight_layout=True
     )
 
-    data_anime = FuncAnimation(
+    animation = FuncAnimation(
         fig=fig,
         func=update,
         frames=len(speed),
-        interval=300
+        interval=0.1
     )
 
-    fig.show()
+    gif_writer = PillowWriter(fps=10)
+    animation.save('race_evolution.gif', writer=gif_writer)
 
 def create_gif(positions: pd.DataFrame, speed: pd.DataFrame) -> None:
     '''
     Create gif of each pilot's position on each lap with average speed
     '''
 
-    print_lap_charts(positions, speed)
+    expanded_positions, expanded_speed = expand_data(positions, speed)
+    print_lap_charts(expanded_positions, expanded_speed)
 
