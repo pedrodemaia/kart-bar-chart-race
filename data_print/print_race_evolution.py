@@ -16,12 +16,17 @@ def expand_data(positions: pd.DataFrame, speed: pd.DataFrame) -> Tuple[pd.DataFr
     factor = 10
     num_laps = speed.shape[0]
 
+    # convert each lap into 10 frames
     expanded_speed.index = range(1, num_laps * factor, factor)
     expanded_positions.index = range(1, num_laps * factor, factor)
 
-    row_nums = [i for i in range(1, (num_laps - 1) * factor + 2) if i % 10 != 1]
-    empty = pd.DataFrame(np.nan, index=row_nums, columns=speed.columns)
+    # add extra frames to last lap
+    expanded_speed.loc[num_laps*factor] = expanded_speed.iloc[-1]
+    expanded_positions.loc[num_laps * factor] = expanded_positions.iloc[-1]
 
+    # interpolate created frames
+    row_nums = [i for i in range(1, num_laps*factor) if i % 10 != 1]
+    empty = pd.DataFrame(np.nan, index=row_nums, columns=speed.columns)
     expanded_speed = pd.concat([expanded_speed, empty]).sort_index().interpolate()
     expanded_positions = pd.concat([expanded_positions, empty]).sort_index().interpolate()
 
