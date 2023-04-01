@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Kart link</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <form id="link-form">
-        <label for="link-input">Link:</label>
-        <input type="text" id="link-input" name="link">
-        <button type="submit">Processar</button>
+  <head>
+    <title>Gerador de GIFs</title>
+  </head>
+  <body>
+    <form id="gif-form">
+      <label for="input-string">Digite a string:</label>
+      <input type="text" id="input-string" name="string" required>
+      <button type="submit">Gerar GIF</button>
     </form>
-
-    <div id="result"></div>
-
+    <div id="gif-container"></div>
     <script>
-        $(function() {
-            $('#link-form').submit(function(event) {
-                event.preventDefault();
-                $.post('/process-link', $(this).serialize(), function(data) {
-                    $('#result').text(data);
-                });
-            });
+      const form = document.querySelector('#gif-form');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const response = await fetch('/gif', {
+          method: 'POST',
+          body: formData,
         });
+        const data = await response.json();
+        const gifPath = data.gif;
+        const gifElement = document.createElement('img');
+        gifElement.src = gifPath;
+        document.querySelector('#gif-container').appendChild(gifElement);
+      });
     </script>
-</body>
+  </body>
 </html>

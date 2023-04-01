@@ -5,21 +5,17 @@ Para chamar aplicação, rodar "python app.py" no terminal
 Acessar a aplicação em localhost:5000
 '''
 
-
-from flask import Flask, request
 import subprocess
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/process-link', methods=['POST'])
-def process_link():
-    link = request.form['link']
-    output = subprocess.check_output(['python', 'main.py', link])
-    return output
-
-@app.route('/')
-def home():
-    return 'Hello World!'
+@app.route('/gif', methods=['POST'])
+def get_gif():
+    string = request.form['string']
+    # Chamar o código Python que gera o GIF
+    subprocess.Popen(['python', 'main.py', string], stdout=subprocess.PIPE)
+    return jsonify({'gif': 'race_evolution.gif'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
