@@ -9,5 +9,9 @@ def process_link():
     output = subprocess.check_output(['python', 'main.py', link])
     return output
 
+@app.route('/')
+def home():
+    return 'Hello World!'
+
 if __name__ == '__main__':
     app.run(debug=True)
