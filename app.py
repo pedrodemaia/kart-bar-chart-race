@@ -1,8 +1,11 @@
 '''
 Web App para executar o kart bar chart race
 
-Para chamar aplicação, rodar "python app.py" no terminal
-Acessar a aplicação em localhost:5000
+Para chamar aplicação, rodar no terminal:
+    poetry shhll
+    set FLASK_APP=app.py
+    flask run
+Rodar com o comando em outro terminal: Invoke-WebRequest -Uri http://localhost:5000/gif -Method POST -Body @{string="http://www.mylaptime.com/laptime/clientes/214V20106819C9780G1X1P108/results/r3.html?evt=11303&epg=6512"}
 '''
 
 import subprocess
