@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Kart link</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <form id="link-form">
+        <label for="link-input">Link:</label>
+        <input type="text" id="link-input" name="link">
+        <button type="submit">Processar</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        $(function() {
+            $('#link-form').submit(function(event) {
+                event.preventDefault();
+                $.post('/process-link', $(this).serialize(), function(data) {
+                    $('#result').text(data);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
