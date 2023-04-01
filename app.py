@@ -1,3 +1,11 @@
+'''
+Web App para executar o kart bar chart race
+
+Para chamar aplicação, rodar "python app.py" no terminal
+Acessar a aplicação em localhost:5000
+'''
+
+
 from flask import Flask, request
 import subprocess
 
