@@ -37,7 +37,7 @@ def print_lap_charts(positions: pd.DataFrame, speed: pd.DataFrame) -> None:
     Create a single lap bar chart
     '''
 
-    rescale = lambda y: (y - np.min(y)) / (np.max(y) - np.min(y))
+    rescale = lambda y: (y - 10) / (np.max(y) - 10)
 
     def update(idx: int) -> None:
         ax.clear()

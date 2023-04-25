@@ -9,7 +9,8 @@ from collections import defaultdict
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-def get_df_from_table(table: webdriver.Chrome) -> pd.DataFrame:
+
+def get_df_from_table(table: webdriver.Firefox) -> pd.DataFrame:
     '''
     Tranform a Selenium webdriver object of a table into pandas dataframe
     '''
@@ -24,7 +25,7 @@ def get_df_from_table(table: webdriver.Chrome) -> pd.DataFrame:
                 table_dict[i][column_names[j]] = col.get_attribute('textContent')
 
     return pd.DataFrame.from_dict(table_dict).transpose()
-def go_to_race_page(driver: webdriver.Chrome) -> None:
+def go_to_race_page(driver: webdriver.Firefox) -> None:
     '''
     This function steps the driver from home page into race page
     '''
@@ -33,7 +34,7 @@ def go_to_race_page(driver: webdriver.Chrome) -> None:
     race_link = driver.find_element(By.XPATH, "/html/body/div[2]/table/tbody/tr[3]/td[2]/a")
     race_link.click()
 
-def go_to_detailed_page(driver: webdriver.Chrome) -> None:
+def go_to_detailed_page(driver: webdriver.Firefox) -> None:
     '''
     This function steps the driver from race page into detailed times page
     '''
@@ -42,7 +43,7 @@ def go_to_detailed_page(driver: webdriver.Chrome) -> None:
     detailed_link = driver.find_element(By.XPATH, "/html/body/table[2]/tbody/tr/td/b/a")
     detailed_link.click()
 
-def get_summary_table(driver: webdriver.Chrome) -> pd.DataFrame:
+def get_summary_table(driver: webdriver.Firefox) -> pd.DataFrame:
     '''
     Use Selenium to get summary race data from site link
     '''
@@ -53,7 +54,7 @@ def get_summary_table(driver: webdriver.Chrome) -> pd.DataFrame:
 
     return get_df_from_table(summary_table)
 
-def get_detailed_table(driver: webdriver.Chrome) -> pd.DataFrame:
+def get_detailed_table(driver: webdriver.Firefox) -> pd.DataFrame:
     '''
     Use Selenium to get summary race data from site link
     '''
@@ -69,7 +70,7 @@ def download_race_data(race_link: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     Return race tables from URL link
     '''
 
-    driver = webdriver.Chrome()
+    driver = webdriver.Firefox()
     driver.get(race_link)
     summary_df = get_summary_table(driver)
     detailed_df = get_detailed_table(driver)
